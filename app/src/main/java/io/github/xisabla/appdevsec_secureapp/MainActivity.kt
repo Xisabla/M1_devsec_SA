@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
         db = Room.databaseBuilder(
             applicationContext,
             AppDatabase::class.java,
-            "M1_devsec_SA_test1.db"
+            "M1_devsec_SA.db"
         )
             .allowMainThreadQueries()
             .build()
@@ -65,6 +65,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun refreshAccounts(view: View) {
+        return refreshAccounts()
+    }
+
+    private fun refreshAccounts() {
         findViewById<TextView>(R.id.testTextView).apply {
             text = "Refreshing..."
         }
@@ -97,7 +101,7 @@ class MainActivity : AppCompatActivity() {
                         accountsList.get(account).accountIban
                     )
 
-                    if (db.accountDao().getByName(acc.name) != null) {
+                    if(db.accountDao().exists(acc.name)) {
                         db.accountDao().update(acc)
                     } else {
                         db.accountDao().insert(acc)

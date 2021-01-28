@@ -11,6 +11,9 @@ interface AccountDao {
     @Query("SELECT * FROM account WHERE name == :name LIMIT 1")
     fun getByName(name: String): Account
 
+    @Query("SELECT EXISTS(SELECT * FROM account WHERE name = :name)")
+    fun exists(name: String): Boolean
+
     @Insert
     fun insertAll(vararg accounts: Account)
 
