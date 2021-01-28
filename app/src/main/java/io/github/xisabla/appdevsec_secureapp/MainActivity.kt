@@ -46,6 +46,7 @@ class MainActivity : AppCompatActivity() {
             .build()
 
         showAccountsFromDB()
+        refreshAccounts()
     }
 
     private fun showAccountsFromDB() {
