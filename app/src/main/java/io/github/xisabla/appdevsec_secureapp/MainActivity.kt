@@ -37,6 +37,7 @@ class MainActivity : AppCompatActivity() {
             .build()
             .create(ApiService::class.java)
 
+        // Build the database
         db = Room.databaseBuilder(
             applicationContext,
             AppDatabase::class.java,
@@ -45,6 +46,7 @@ class MainActivity : AppCompatActivity() {
             .allowMainThreadQueries()
             .build()
 
+        // Show stored data and try to refresh
         showAccountsFromDB()
         refreshAccounts()
     }
