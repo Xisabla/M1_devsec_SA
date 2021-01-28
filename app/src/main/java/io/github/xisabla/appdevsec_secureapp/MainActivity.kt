@@ -4,8 +4,11 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
+import androidx.room.Room
 import io.github.xisabla.appdevsec_secureapp.api.AccountsByID
 import io.github.xisabla.appdevsec_secureapp.api.ApiService
+import io.github.xisabla.appdevsec_secureapp.database.AppDatabase
+import io.github.xisabla.appdevsec_secureapp.model.Account
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -14,12 +17,12 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var db: AppDatabase
+
     private val retrofit: Retrofit.Builder = Retrofit.Builder()
         .addConverterFactory(GsonConverterFactory.create())
 
     private var service: ApiService? = null;
-
-    private val accountsList: MutableList<AccountsByID> = mutableListOf<AccountsByID>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,6 +36,31 @@ class MainActivity : AppCompatActivity() {
         service = retrofit.baseUrl("https://6007f1a4309f8b0017ee5022.mockapi.io/api/m1/")
             .build()
             .create(ApiService::class.java)
+
+        db = Room.databaseBuilder(
+            applicationContext,
+            AppDatabase::class.java,
+            "M1_devsec_SA_test1.db"
+        )
+            .allowMainThreadQueries()
+            .build()
+
+        showAccountsFromDB()
+    }
+
+    private fun showAccountsFromDB() {
+        val accounts = db.accountDao().getAll()
+        var accountText = ""
+
+        // Append text
+        for (account in accounts) {
+            accountText += "Account Name: " + account.name + "\n" + "Account IBAN: " + account.iban + "\n" + "Amount: " + account.amount + account.currency + "\n\n"
+        }
+
+        // Update TextView text
+        findViewById<TextView>(R.id.testTextView).apply {
+            text = "Listing " + accounts.size.toString() + " accounts:\n\n" + accountText
+        }
     }
 
     fun refreshAccounts(view: View) {
@@ -53,48 +81,34 @@ class MainActivity : AppCompatActivity() {
                 call: Call<List<AccountsByID>>,
                 response: Response<List<AccountsByID>>
             ) {
-                // Empty current list
-                // NOTE: This is temporarily, as we will use ad db the process will be the following one:
-                //  - New local accountsList here
-                //  - Fill it (accountsList.add)
-                //  - Update database information with accountsList content
-                //  - Update global accountsList from the database
-                //     --> This should be in another method as it would be called at that start of the appplication as well
-                //  - Update view
-                accountsList.clear()
+                val accountsList = mutableListOf<AccountsByID>()
 
                 // Fetch accounts
                 for (x in 0 until (response.body()?.size!!)) response.body()?.get(x)
                     ?.let { accountsList.add(it) }
 
-                //  This is temporarily as well, don't really mind
-                var accountText = "";
-
-                // Debug: print accounts
-                // TODO: Remove this (Debugging information are accessible (-2pts))
+                // Update/Insert to Database
                 for (account in 0 until (accountsList.size)) {
-                    accountText += "Account Name: " + accountsList.get(account).accountName + "\n" + "Account IBAN: " + accountsList.get(
-                        account
-                    ).accountIban + "\n" + "Account Amount: " + accountsList.get(account).accountAmount.toString() + accountsList.get(
-                        account
-                    ).accountCurrency + "\n\n"
+                    val acc = Account(
+                        accountsList.get(account).accountName,
+                        accountsList.get(account).accountAmount.toString(),
+                        accountsList.get(account).accountCurrency,
+                        accountsList.get(account).accountIban
+                    )
 
-                    /*Log.d("account name", accountsList.get(account).accountName)
-                    Log.d("account Iban", accountsList.get(account).accountIban)
-                    Log.d(
-                        "account amount",
-                        accountsList.get(account).accountAmount.toString() + accountsList.get(
-                            account
-                        ).accountCurrency
-                    )*/
+                    if (db.accountDao().getByName(acc.name) != null) {
+                        db.accountDao().update(acc)
+                    } else {
+                        db.accountDao().insert(acc)
+                    }
                 }
 
-                // Show it's done
-                findViewById<TextView>(R.id.testTextView).apply {
-                    text = "Done: " + accountsList.size + " accounts fetched\n\n\n" + accountText
-                }
+                // Update show
+                showAccountsFromDB()
             }
 
         })
+
+
     }
 }
