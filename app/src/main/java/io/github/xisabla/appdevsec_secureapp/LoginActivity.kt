@@ -53,14 +53,20 @@ class LoginActivity : AppCompatActivity() {
      * will launch the Main Activity (which means, unlock the Application)
      */
     fun login(view: View) {
-        val password = findViewById<EditText>(R.id.passwordInput).text
+        val input = findViewById<EditText>(R.id.passwordInput)
+        val errorMessage = findViewById<TextView>(R.id.errorMessage)
+        val password = input.text.toString()
+
+        // Reset pin and text
+        input.text.clear()
+        errorMessage.visibility = View.INVISIBLE
 
         // Launch MainActivity if the password is good
-        if(checkPassword(password.toString())) {
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
+        if(checkPassword(password)) {
+            startActivity(Intent(this, MainActivity::class.java))
         } else {
-            findViewById<TextView>(R.id.errorMessage).visibility = View.VISIBLE
+            // Show error message
+            errorMessage.visibility = View.VISIBLE
         }
     }
 }
