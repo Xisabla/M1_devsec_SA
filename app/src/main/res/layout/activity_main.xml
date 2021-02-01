@@ -25,18 +25,20 @@
                 android:text="Refresh" />
 
             <Button
-                android:id="@+id/button"
+                android:id="@+id/changePinButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Button" />
+                android:onClick="openPinChanger"
+                android:text="Change Pin" />
 
             <Button
-                android:id="@+id/button2"
+                android:id="@+id/lockButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Button" />
+                android:onClick="lock"
+                android:text="Lock" />
 
         </LinearLayout>
 

@@ -1,5 +1,6 @@
 package io.github.xisabla.appdevsec_secureapp
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -89,13 +90,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
-     * Refresh accounts from button
-     */
-    fun refreshAccounts(view: View) {
-        return refreshAccounts()
-    }
-
-    /**
      * Refresh accounts data from API call
      */
     private fun refreshAccounts() {
@@ -146,4 +140,27 @@ class MainActivity : AppCompatActivity() {
 
 
     }
+
+    /**
+     * Refresh accounts from button
+     */
+    fun refreshAccounts(view: View) {
+        return refreshAccounts()
+    }
+
+    /**
+     * Launch password changer activity
+     */
+    fun openPinChanger(view: View) {
+        // TODO: Open a new created activity "PasswordChangerActivity" this will prompt for a
+        //  new pin (twice), change the stored pin and finish on validate
+    }
+
+    /**
+     * Lock the application by finishing the activity (going back to login activity)
+     */
+    fun lock(view: View) {
+        finish()
+    }
+
 }
