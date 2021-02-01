@@ -50,11 +50,11 @@
                 android:orientation="vertical" >
 
                 <TextView
-                    android:id="@+id/testTextView"
+                    android:id="@+id/accountsText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Hello World" />
+                    android:text="If you can read this text, there might be an error" />
             </LinearLayout>
         </ScrollView>
 

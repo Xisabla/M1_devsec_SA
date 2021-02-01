@@ -83,7 +83,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         // Update TextView text
-        findViewById<TextView>(R.id.testTextView).apply {
+        findViewById<TextView>(R.id.accountsText).apply {
             text = "Listing " + accounts.size.toString() + " accounts:\n\n" + accountText
         }
     }
@@ -99,7 +99,7 @@ class MainActivity : AppCompatActivity() {
      * Refresh accounts data from API call
      */
     private fun refreshAccounts() {
-        findViewById<TextView>(R.id.testTextView).apply {
+        findViewById<TextView>(R.id.accountsText).apply {
             text = "Refreshing..."
         }
 
