@@ -15,14 +15,34 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
+/**
+ * Main Activity: Allow the user to see his accounts and to refresh the data
+ */
 class MainActivity : AppCompatActivity() {
 
+    /**
+     * Accounts database, defined later
+     */
     private lateinit var db: AppDatabase
 
+    /**
+     * API Call builder
+     */
     private val retrofit: Retrofit.Builder = Retrofit.Builder()
         .addConverterFactory(GsonConverterFactory.create())
 
-    private var service: ApiService? = null;
+    /**
+     * Retrofit API Service, defined later
+     */
+    private lateinit var service: ApiService;
+
+    /**
+     * Fetch the API Call url
+     */
+    private fun getAPIUrl() : String {
+        // Todo: fetch the url from a file (cyphered ?, encrypted file, whatever)
+        return "https://6007f1a4309f8b0017ee5022.mockapi.io/api/m1/"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,8 +52,7 @@ class MainActivity : AppCompatActivity() {
         title = "Accounts";
 
         // Set retrofit call url
-        // TODO: Read url from somewhere else ("Api url is recoverable (-2pts)")
-        service = retrofit.baseUrl("https://6007f1a4309f8b0017ee5022.mockapi.io/api/m1/")
+        service = retrofit.baseUrl(getAPIUrl())
             .build()
             .create(ApiService::class.java)
 
@@ -51,6 +70,9 @@ class MainActivity : AppCompatActivity() {
         refreshAccounts()
     }
 
+    /**
+     * Update textview with the database accounts information
+     */
     private fun showAccountsFromDB() {
         val accounts = db.accountDao().getAll()
         var accountText = ""
@@ -66,18 +88,24 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Refresh accounts from button
+     */
     fun refreshAccounts(view: View) {
         return refreshAccounts()
     }
 
+    /**
+     * Refresh accounts data from API call
+     */
     private fun refreshAccounts() {
         findViewById<TextView>(R.id.testTextView).apply {
             text = "Refreshing..."
         }
 
-        val accountsRequest = service?.getAccountInformation()
+        val accountsRequest = service.getAccountInformation()
 
-        accountsRequest?.enqueue(object : Callback<List<AccountsByID>> {
+        accountsRequest.enqueue(object : Callback<List<AccountsByID>> {
             // Throw on failure
             override fun onFailure(call: Call<List<AccountsByID>>, t: Throwable) {
                 t.message?.let { error(it) }
@@ -97,10 +125,10 @@ class MainActivity : AppCompatActivity() {
                 // Update/Insert to Database
                 for (account in 0 until (accountsList.size)) {
                     val acc = Account(
-                        accountsList.get(account).accountName,
-                        accountsList.get(account).accountAmount.toString(),
-                        accountsList.get(account).accountCurrency,
-                        accountsList.get(account).accountIban
+                        accountsList[account].accountName,
+                        accountsList[account].accountAmount.toString(),
+                        accountsList[account].accountCurrency,
+                        accountsList[account].accountIban
                     )
 
                     if(db.accountDao().exists(acc.name)) {
