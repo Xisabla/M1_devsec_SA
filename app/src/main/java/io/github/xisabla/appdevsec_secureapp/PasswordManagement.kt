@@ -1,6 +1,5 @@
 package io.github.xisabla.appdevsec_secureapp
 
-import android.util.Log
 import java.io.File
 import java.io.FileReader
 import java.io.FileWriter
@@ -24,41 +23,41 @@ class PasswordManagement() {
 
 
         /**
-         * @return Indicate if a new file has been created or not
+         * @return Assume that the file exists, if doesn't create it with default pin "0000"
          */
-        fun checkFileExist(appContext: File): String{
+        private fun checkFileExist(appContext: File) {
             val file = File(appContext, "password")
-            val returnExist=file.exists()
-            if (returnExist.toString()=="false") {
-                val fileWriter = FileWriter(file)
-                fileWriter.write("39DFA55283318D31AFE5A3FF4A0E3253E2045E43")
-                fileWriter.close()
-                return "File has been created"
+
+            if(!file.exists()) {
+                setStoredPwdHash(appContext, hash("0000"))
             }
-            return "File already exist"
         }
 
         /**
          * @return The stored hashed password of the Application
          */
         fun getStoredPwHash(appContext: File): String {
+            checkFileExist(appContext)
+
             val file = File(appContext, "password")
             val fileReader = FileReader(file)
             val content = StringBuilder()
+
             fileReader.forEachLine { line -> content.append(line) }
             fileReader.close()
+
             return content.toString()
         }
 
         /**
          * @return Change current password by newPassHash
          */
-        fun setStoredPwdHash(appContext: File, newPassHash : String): String {
+        fun setStoredPwdHash(appContext: File, newPassHash : String) {
             val file = File(appContext, "password")
             val fileWriter = FileWriter(file)
+
             fileWriter.write(newPassHash)
             fileWriter.close()
-            return "Password has been changed !"
         }
     }
 }

@@ -3,13 +3,9 @@ package io.github.xisabla.appdevsec_secureapp
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.TextView
-import java.lang.StringBuilder
-import java.nio.charset.Charset
-import java.security.MessageDigest
 
 /**
  * Login Activity: Asks the user to prompt a numeric pin to unlock the main activity
@@ -26,7 +22,6 @@ class LoginActivity : AppCompatActivity() {
      * @return The stored hashed password of the Application
      */
     private fun getStoredPasswordHash() : String {
-        Log.d("check if file exist", PasswordManagement.checkFileExist(applicationContext.filesDir))
         return PasswordManagement.getStoredPwHash(applicationContext.filesDir)
     }
 
