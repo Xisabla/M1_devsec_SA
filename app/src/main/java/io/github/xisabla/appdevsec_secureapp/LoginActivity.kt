@@ -34,20 +34,7 @@ class LoginActivity : AppCompatActivity() {
      * @return True if the given password is valid to unlock the Application
      */
     private fun checkPassword(password: String): Boolean {
-        // Compute password hash
-        val digest = MessageDigest.getInstance("SHA-1")
-        val result = digest.digest(password.toByteArray(Charset.defaultCharset()))
-        val sb = StringBuilder()
-        result.forEach { b -> sb.append(String.format("%02X", b)) }
-
-        val hash = sb.toString()
-
-        // TODO: Remove debug stuff
-        Log.d("Given Password", password)
-        Log.d("Password hash", hash)
-
-        // Check password hash
-        return hash.toUpperCase() == getStoredPasswordHash().toUpperCase()
+        return PasswordManagement.hash(password).equals(getStoredPasswordHash(), true)
     }
 
     /**

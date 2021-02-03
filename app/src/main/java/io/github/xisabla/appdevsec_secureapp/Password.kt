@@ -5,9 +5,24 @@ import java.io.File
 import java.io.FileReader
 import java.io.FileWriter
 import java.lang.StringBuilder
+import java.nio.charset.Charset
+import java.security.MessageDigest
 
 class PasswordManagement() {
     companion object {
+        /**
+         * @return The SHA-1 hash of the given password/pin as a String
+         */
+        fun hash(password: String): String {
+            val digest = MessageDigest.getInstance("SHA-1")
+            val result = digest.digest(password.toByteArray(Charset.defaultCharset()))
+            val sb = StringBuilder()
+            result.forEach { b -> sb.append(String.format("%02X", b)) }
+
+            return sb.toString()
+        }
+
+
         /**
          * @return Indicate if a new file has been created or not
          */
@@ -22,6 +37,7 @@ class PasswordManagement() {
             }
             return "File already exist"
         }
+
         /**
          * @return The stored hashed password of the Application
          */
@@ -33,6 +49,7 @@ class PasswordManagement() {
             fileReader.close()
             return content.toString()
         }
+
         /**
          * @return Change current password by newPassHash
          */
