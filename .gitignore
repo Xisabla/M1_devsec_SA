@@ -160,3 +160,12 @@ fabric.properties
 !/gradle/wrapper/gradle-wrapper.jar
 
 # End of https://www.toptal.com/developers/gitignore/api/androidstudio
+
+# To match the report guidelines
+.idea
+gradle
+build.gradle
+gradle.properties
+gradlew
+gradlew.bat
+settings.gradle
