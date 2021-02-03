@@ -7,6 +7,9 @@ import java.lang.StringBuilder
 import java.nio.charset.Charset
 import java.security.MessageDigest
 
+/**
+ * Password Management: static methods to read and write password hash to data storage
+ */
 class PasswordManagement() {
     companion object {
         /**
