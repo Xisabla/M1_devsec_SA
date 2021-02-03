@@ -2,6 +2,8 @@
 
 AppDevSec Android Project: https://github.com/Hexliath/M1_devsec_SA
 
+APK can be found [>> here <<](https://github.com/Xisabla/M1_devsec_SA/releases/tag/1.0.0)
+
 ## Questions to answer in this README
 
 - Explain how you ensure user is the right one starting the app
