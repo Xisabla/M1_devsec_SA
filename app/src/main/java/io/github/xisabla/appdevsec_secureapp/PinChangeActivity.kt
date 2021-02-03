@@ -1,11 +1,10 @@
-package io.github.xisabla.appdevsec_secureapp.model
+package io.github.xisabla.appdevsec_secureapp
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.EditText
 import android.widget.Toast
-import io.github.xisabla.appdevsec_secureapp.R
 
 class PinChangeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -16,53 +15,47 @@ class PinChangeActivity : AppCompatActivity() {
     }
 
     /**
-     * will verify if both new passwords are the same and react accordingly
+     * Will verify if both new passwords are the same and react accordingly
      */
-    private fun verifyPassword(newPassword: String, check_newPassword: String) {
-        if (newPassword == check_newPassword) {
-            //todo change password in file
+    private fun verifyPassword(password: String, passwordConfirm: String): Boolean {
+        if (password == passwordConfirm) {
+            PasswordManagement.setStoredPwdHash(
+                applicationContext.filesDir,
+                PasswordManagement.hash(password)
+            )
 
-            /**
-             * displays a dynamic message telling user whether the change has been done
-             */
             val myToast = Toast.makeText(
                 applicationContext,
-                "changed password successfully",
+                "Password changed successfully",
                 Toast.LENGTH_SHORT
             )
             myToast.show()
 
-            finish()
+            return true
         } else {
             val myToast =
                 Toast.makeText(applicationContext, "Passwords do not match", Toast.LENGTH_SHORT)
             myToast.show()
+
+            return false
         }
     }
 
-    private fun changePassword() {
-        /**
-         * first password change variable
-         */
-        val input = findViewById<EditText>(R.id.editPassword)
-
-        /**
-         * second password change variable
-         */
-        val input2 = findViewById<EditText>(R.id.editPassword2)
-
-        val newPassword = input.text.toString()
-        val newPassword2 = input2.text.toString()
-
-        verifyPassword(newPassword, newPassword2)
-    }
-
     /**
-     * allows the verify Password button to call the function
+     * Allows the verify Password button to call the function
      */
-    fun changePassword(view: View){
-        return changePassword()
+    fun changePassword(view: View) {
+        val input = findViewById<EditText>(R.id.editPassword)
+        val inputConfirm = findViewById<EditText>(R.id.editPasswordConfirm)
+
+        val password = input.text.toString()
+        val passwordConfirm = inputConfirm.text.toString()
+
+        if (verifyPassword(password, passwordConfirm)) {
+            finish()
+        }
     }
+
     /**
      * When clicking the goBack button, the user will return to the account page
      */

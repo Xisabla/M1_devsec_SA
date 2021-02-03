@@ -152,8 +152,7 @@ class MainActivity : AppCompatActivity() {
      * Launch password changer activity
      */
     fun openPinChanger(view: View) {
-        // TODO: Open a new created activity "PasswordChangerActivity" this will prompt for a
-        //  new pin (twice), change the stored pin and finish on validate
+        startActivity(Intent(this, PinChangeActivity::class.java))
     }
 
     /**
