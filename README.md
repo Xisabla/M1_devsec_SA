@@ -4,7 +4,7 @@ AppDevSec Android Project: https://github.com/Hexliath/M1_devsec_SA
 
 ## TODO
 
-- [ ] Read password hash from file
+- [x] Read password hash from file
 - [ ] Read api url from file
 - [ ] Allow user to change password
 - [x] Allow user to lock the application (logout)

@@ -14,6 +14,7 @@ import java.security.MessageDigest
 /**
  * Login Activity: Asks the user to prompt a numeric pin to unlock the main activity
  */
+
 class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,13 +22,12 @@ class LoginActivity : AppCompatActivity() {
 
         title = "Accounts: login"
     }
-
     /**
      * @return The stored hashed password of the Application
      */
     private fun getStoredPasswordHash() : String {
-        // Todo: fetch the password hash from a file
-        return "39DFA55283318D31AFE5A3FF4A0E3253E2045E43"
+        Log.d("check if file exist", PasswordManagement.checkFileExist(applicationContext.filesDir))
+        return PasswordManagement.getStoredPwHash(applicationContext.filesDir)
     }
 
     /**
