@@ -21,3 +21,7 @@ The database files can't be read by any non-root users as it is a Room database
 The main idea behind our implementation was to store the API URL in a .so file, way harder to decipher than a classic Kotlin class from decompilation. In order to do so, we store the URL in a C++ class and we fetch it by calling a function from our Main Activity.
 
 - Screenshots of your application
+
+![](https://raw.githubusercontent.com/Xisabla/M1_devsec_SA/main/.github/screen0.PNG)
+![](https://raw.githubusercontent.com/Xisabla/M1_devsec_SA/main/.github/screen1.PNG)
+![](https://raw.githubusercontent.com/Xisabla/M1_devsec_SA/main/.github/screen2.PNG)
