@@ -31,7 +31,7 @@ class PasswordManagement() {
         private fun checkFileExist(appContext: File) {
             val file = File(appContext, "password")
 
-            if(!file.exists()) {
+            if (!file.exists()) {
                 setStoredPwdHash(appContext, hash("0000"))
             }
         }
@@ -55,7 +55,7 @@ class PasswordManagement() {
         /**
          * @return Change current password by newPassHash
          */
-        fun setStoredPwdHash(appContext: File, newPassHash : String) {
+        fun setStoredPwdHash(appContext: File, newPassHash: String) {
             val file = File(appContext, "password")
             val fileWriter = FileWriter(file)
 

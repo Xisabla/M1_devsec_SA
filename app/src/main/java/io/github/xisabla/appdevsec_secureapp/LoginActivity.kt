@@ -18,10 +18,11 @@ class LoginActivity : AppCompatActivity() {
 
         title = "Accounts: login"
     }
+
     /**
      * @return The stored hashed password of the Application
      */
-    private fun getStoredPasswordHash() : String {
+    private fun getStoredPasswordHash(): String {
         return PasswordManagement.getStoredPwHash(applicationContext.filesDir)
     }
 
@@ -46,7 +47,7 @@ class LoginActivity : AppCompatActivity() {
         errorMessage.visibility = View.INVISIBLE
 
         // Launch MainActivity if the password is good
-        if(checkPassword(password)) {
+        if (checkPassword(password)) {
             startActivity(Intent(this, MainActivity::class.java))
         } else {
             // Show error message

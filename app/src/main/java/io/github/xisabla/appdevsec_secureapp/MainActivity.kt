@@ -3,6 +3,7 @@ package io.github.xisabla.appdevsec_secureapp
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Base64
 import android.view.View
 import android.widget.TextView
 import androidx.room.Room
@@ -20,6 +21,14 @@ import retrofit2.converter.gson.GsonConverterFactory
  * Main Activity: Allow the user to see his accounts and to refresh the data
  */
 class MainActivity : AppCompatActivity() {
+    init {
+        System.loadLibrary("native-lib")
+    }
+
+    companion object {
+        @JvmStatic
+        external fun getUrl(): String
+    }
 
     /**
      * Accounts database, defined later
@@ -40,10 +49,6 @@ class MainActivity : AppCompatActivity() {
     /**
      * Fetch the API Call url
      */
-    private fun getAPIUrl() : String {
-        // Todo: fetch the url from a file (cyphered ?, encrypted file, whatever)
-        return "https://6007f1a4309f8b0017ee5022.mockapi.io/api/m1/"
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,7 +58,7 @@ class MainActivity : AppCompatActivity() {
         title = "Accounts";
 
         // Set retrofit call url
-        service = retrofit.baseUrl(getAPIUrl())
+        service = retrofit.baseUrl(String(Base64.decode(getUrl(), Base64.DEFAULT)))
             .build()
             .create(ApiService::class.java)
 
@@ -125,7 +130,7 @@ class MainActivity : AppCompatActivity() {
                         accountsList[account].accountIban
                     )
 
-                    if(db.accountDao().exists(acc.name)) {
+                    if (db.accountDao().exists(acc.name)) {
                         db.accountDao().update(acc)
                     } else {
                         db.accountDao().insert(acc)
@@ -140,6 +145,7 @@ class MainActivity : AppCompatActivity() {
 
 
     }
+
 
     /**
      * Refresh accounts from button
@@ -161,5 +167,4 @@ class MainActivity : AppCompatActivity() {
     fun lock(view: View) {
         finish()
     }
-
 }

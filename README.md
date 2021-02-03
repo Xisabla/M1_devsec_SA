@@ -2,13 +2,6 @@
 
 AppDevSec Android Project: https://github.com/Hexliath/M1_devsec_SA
 
-## TODO
-
-- [x] Read password hash from file
-- [ ] Read api url from file
-- [x] Allow user to change password
-- [x] Allow user to lock the application (logout)
-
 ## Questions to answer in this README
 
 - Explain how you ensure user is the right one starting the app
@@ -24,4 +17,7 @@ The password file only stores a hash so the user can't read the real data
 The database files can't be read by any non-root users as it is a Room database
 
 - How did you hide the API url ?
+
+The main idea behind our implementation was to store the API URL in a .so file, way harder to decipher than a classic Kotlin class from decompilation. In order to do so, we store the URL in a C++ class and we fetch it by calling a function from our Main Activity.
+
 - Screenshots of your application
